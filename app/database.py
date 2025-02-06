@@ -4,10 +4,17 @@ from sqlalchemy.orm import sessionmaker
 
 
 
-SQLALCHEMY_DATABASE_URL = "postgresql://<username>:<password>@<ip-address/hostname>/<database_name>"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:1213@localhost/fastapi"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
-SessionLocal = sessionmaker(autoflush=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autoflush=False, bind=engine)
 
 Base = declarative_base()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
